@@ -1,50 +1,83 @@
+#include<stdlib.h>
 #include<stdio.h>
-int main()
+#include<conio.h>
+int Previous=145;
+int Current=143;
+int Check(int Variable)
 {
-	int Id[20],Burst_time[20], Priority[20], Waiting_time[20],Turn_around_time[20],i, k, n, Temp;
-	float Average_waiting_time, Average_turn_around_time;
-	printf("Enter the number of people (Student + teacher): ");
-	scanf("%d",&n);
-for(i=0;i<n;i++)
-{
-Id[i] = i;
-printf("Time taken by person %d: ", i);
-scanf("%d",&Burst_time[i]);
-printf("Enter priority: Teacher/Student(0/1): ");
-scanf("%d", &Priority[i]);
-}
-
-for(i=0;i<n;i++)
-{
-	for(k=i+1;k<n;k++)
+	if(Variable>0)
 	{
-		if(Priority[i] > Priority[k])
-		{
-			Temp = Id[i];
-	        Id[i] = Id[k];
-			Id[k] = Temp;
-	        Temp = Burst_time[i];
-		    Burst_time[i] = Burst_time[k];
-		    Burst_time [k] = Temp;
-		    Temp = Priority[i];
-		    Priority[i] = Priority[k];
-	        Priority[k] = Temp;
-		}
-		Average_waiting_time = Waiting_time[0] = 0;
-		Average_turn_around_time = Turn_around_time[0] = Burst_time[0];
-		for(i=1;i<n;i++)
-		{
-			Waiting_time[i] = Waiting_time[i-1] + Burst_time[i-1];
-			Turn_around_time[i] = Turn_around_time[i-1] + Burst_time[i];
-			Average_waiting_time = Average_waiting_time + Waiting_time[i];
-			Average_turn_around_time = Average_turn_around_time + Turn_around_time[i];
-		}
+		return Variable;
+	}
+	else
+	{
+		return (Variable*-1);
 	}
 }
-printf("\n Person \t Priority \t Allotted Time \t Waiting Time \t Turnaround Time ");
-for(i=0;i<n;i++)
-printf("\n %d \t\t %d \t\t %d \t\t %d \t\t %d ",Id[i],Priority[i],Burst_time[i], Waiting_time[i], Turn_around_time[i]);
-printf("\n\n Average Waiting Time: %f",Average_waiting_time/n);
-printf("\n Average Turnaround Time: %f",Average_turn_around_time/n);
-getch();
+int main()
+{
+	int Queue[] = {86, 1470, 913, 1774, 948, 1509, 1022, 1750, 130};
+	int i,Start,Length=sizeof(Queue)/sizeof(int),Distance=0,Last,First,a,j;
+	 for (i = 0; i < Length; ++i) 
+        {
+            for (j = i + 1; j < Length; ++j)
+            {
+                if (Queue[i] > Queue[j]) 
+                {
+                    a =  Queue[i];
+                    Queue[i] = Queue[j];
+                    Queue[j] = a;
+                }
+            } 
+        }
+        Last = Current;
+    if(Current>=Previous){
+        for(i=0; i<Length; i++){
+            if(Queue[i]>Current){
+                Start=i;
+                break;
+            }
+        }
+        printf("Order    : %4d",Last);
+        for(i=Start; i<Length; i++){
+            printf(", %4d",Queue[i]);
+             for(i=Start; i<Length; i++)
+        for(i=Start; i>0; i--){
+            printf(", %4d",Queue[i-1]);
+            First = Queue[i];
+
+            Distance+= Check(Last-First);
+            printf("[%d]",Check(Last-First) );
+            Last = First;
+        }
+}
+}
+      else if(Current<Previous){
+        for(i=0; i<Length; i++){
+            if(Queue[i]>Current){
+                Start=i;
+                break;
+            }
+        }
+        printf("Sequence : %4d",Last);
+        for(i=Start-1; i>=0; i--){
+            printf(", %4d",Queue[i]);
+            First = Queue[i];
+
+            Distance+= Check(Last-First);
+            printf("[%d]",Check(Last-First) );
+            Last = First;
+        }
+        for(i=Start; i<Length; i++){
+            printf(", %4d",Queue[i]);
+            First = Queue[i];
+
+            Distance+= Check(Last-First);
+            printf("[%d]",Check(Last-First) );
+            Last = First;
+        }
+    }
+    printf("\nDistance : %d\n",Distance);
+    return 0;
+    getch();
 }
